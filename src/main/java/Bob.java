@@ -20,6 +20,9 @@ public class Bob {
 
 
         boolean mainFlag = true;
+        String[] list = new String[100];
+        int index = 0;
+
         while(mainFlag) {
             System.out.println("Enter input: ");
             Scanner input = new Scanner(System.in);
@@ -31,8 +34,15 @@ public class Bob {
                 System.out.println("Bye. Hope to see you again soon!");
                 mainFlag = false;
             }
+            else if(line.equals("list")) {
+                for(int i = 0; i < 100 && list[i] != null; i++) {
+                    System.out.println(i + ": " + list[i]);
+                }
+            }
             else {
-                System.out.println(line);
+                list[index] = line;
+                index++;
+                System.out.println("Added: " + line);
             }
 
             System.out.println("_________________________________________");
