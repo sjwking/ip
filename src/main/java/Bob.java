@@ -71,7 +71,8 @@ public class Bob {
         }
         else {
             System.out.println("Nice! I've marked this task as done:");
-            System.out.println("[" + list.tasks[Integer.parseInt(words[1])-1].getType() + "][X] " + list.tasks[Integer.parseInt(words[1])-1].getDescription());
+            int taskIndex = Integer.parseInt(words[1])-1;
+            System.out.println("[" + list.tasks[taskIndex].getType() + "][X] " + list.tasks[taskIndex].getDescription());
             list.tasks[Integer.parseInt(words[1])-1].setIsDone(true);
         }
     }
@@ -85,7 +86,8 @@ public class Bob {
         }
         else {
             System.out.println("OK, I've marked this task as not done yet:");
-            System.out.println("[" + list.tasks[Integer.parseInt(words[1])-1].getType() + "][ ] " + list.tasks[Integer.parseInt(words[1])-1].getDescription());
+            int taskIndex = Integer.parseInt(words[1])-1;
+            System.out.println("[" + list.tasks[taskIndex].getType() + "][ ] " + list.tasks[taskIndex].getDescription());
             list.tasks[Integer.parseInt(words[1])-1].setIsDone(false);
         }
     }
