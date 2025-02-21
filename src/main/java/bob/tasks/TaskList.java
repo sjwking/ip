@@ -1,14 +1,36 @@
 package bob.tasks;
 
 import bob.exceptions.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.util.Scanner;
 
 public class TaskList {
-    protected Task[] tasks = new Task[100];
+    protected ArrayList<Task> tasks = new ArrayList<>();
     protected int numberOfTasks = 0;
 
     public void addTask(Task task) {
-        tasks[numberOfTasks] = task;
+        tasks.add(task);
         numberOfTasks++;
+        try {
+            appendToFile("bob.txt",task);
+        }
+        catch(IOException e) {
+            System.out.println("error");
+        }
+    }
+
+    public void removeTask(int index) {
+        tasks.remove(index);
+        numberOfTasks--;
+        try {
+            writeToFile("bob.txt");
+        }
+        catch(IOException e) {
+            System.out.println("error");
+        }
     }
 
     public int getNumberOfTasks() {
@@ -17,29 +39,32 @@ public class TaskList {
 
     public boolean processInput(String[] words, String line) {
         switch(words[0]) {
-            case "bye":
-                return exitProgram();
-            case "list":
-                this.printList();
-                break;
-            case "mark":
-                this.markTask(words);
-                break;
-            case "unmark":
-                this.unmarkTask(words);
-                break;
-            case "todo":
-                this.addTodo(words);
-                break;
-            case "deadline":
-                this.addDeadline(words,line);
-                break;
-            case "event":
-                this.addEvent(words,line);
-                break;
-            default:
-                this.addDefaultTask(line);
-                break;
+        case "bye":
+            return exitProgram();
+        case "list":
+            this.printList();
+            break;
+        case "mark":
+            this.markTask(words);
+            break;
+        case "unmark":
+            this.unmarkTask(words);
+            break;
+        case "todo":
+            this.addTodo(words);
+            break;
+        case "deadline":
+            this.addDeadline(words,line);
+            break;
+        case "event":
+            this.addEvent(words,line);
+            break;
+        case "delete":
+            this.deleteTask(words);
+            break;
+        default:
+            System.out.println("Please enter a valid command.");
+            break;
         }
         return false;
     }
@@ -51,9 +76,10 @@ public class TaskList {
 
     public void printList() {
         System.out.println("Here are the tasks in your list:");
-        for(int i = 0; tasks[i] != null; i++) {
-            System.out.println(i+1 + ". [" + tasks[i].getType() + "][" + tasks[i].getStatusIcon() + "] " + tasks[i].getDescription());
+        for(int i = 0; i < tasks.size(); i++) {
+            System.out.println(i+1 + ". [" + tasks.get(i).getType() + "][" + tasks.get(i).getStatusIcon() + "] " + tasks.get(i).getDescription());
         }
+
     }
 
     public void markTask(String[] words) {
@@ -67,8 +93,9 @@ public class TaskList {
             else {
                 System.out.println("Nice! I've marked this task as done:");
                 int taskIndex = Integer.parseInt(words[1]) - 1;
-                System.out.println("[" + tasks[taskIndex].getType() + "][X] " + tasks[taskIndex].getDescription());
-                tasks[Integer.parseInt(words[1]) - 1].setIsDone(true);
+                System.out.println("[" + tasks.get(taskIndex).getType() + "][X] " + tasks.get(taskIndex).getDescription());
+                tasks.get(Integer.parseInt(words[1]) - 1).setIsDone(true);
+                writeToFile("bob.txt");
             }
         }
         catch(InvalidMarkCommand e) {
@@ -79,6 +106,9 @@ public class TaskList {
         }
         catch (NumberFormatException e){
             System.out.println("Please enter a task number.");
+        }
+        catch (IOException e) {
+            System.out.println("error");
         }
     }
 
@@ -93,8 +123,9 @@ public class TaskList {
             else {
                 System.out.println("OK, I've marked this task as not done yet:");
                 int taskIndex = Integer.parseInt(words[1])-1;
-                System.out.println("[" + tasks[taskIndex].getType() + "][ ] " + tasks[taskIndex].getDescription());
-                tasks[Integer.parseInt(words[1])-1].setIsDone(false);
+                System.out.println("[" + tasks.get(taskIndex).getType() + "][ ] " + tasks.get(taskIndex).getDescription());
+                tasks.get(Integer.parseInt(words[1])-1).setIsDone(false);
+                writeToFile("bob.txt");
             }
         }
         catch(InvalidUnmarkCommand e) {
@@ -105,6 +136,9 @@ public class TaskList {
         }
         catch (NumberFormatException e){
             System.out.println("Please enter a task number.");
+        }
+        catch (IOException e) {
+            System.out.println("error");
         }
     }
 
@@ -120,7 +154,7 @@ public class TaskList {
         addTask(task);
         System.out.println("Got it. I've added this task:");
         System.out.println("[T][ ] " + description);
-        System.out.println("Now you have " + getNumberOfTasks() + " tasks in the list.");
+        printNumberOfTasks();
     }
 
     public void addDeadline(String[] words, String line) {
@@ -139,7 +173,7 @@ public class TaskList {
             addTask(task);
             System.out.println("Got it. I've added this task:");
             System.out.println("[D][ ] " + task.getDescription());
-            System.out.println("Now you have " + getNumberOfTasks() + " tasks in the list.");
+            printNumberOfTasks();
 
         }
         catch(InvalidDeadlineCommand e) {
@@ -171,23 +205,94 @@ public class TaskList {
             addTask(task);
             System.out.println("Got it. I've added this task:");
             System.out.println("[E][ ] " + task.getDescription());
-            System.out.println("Now you have " + getNumberOfTasks() + " tasks in the list.");
+            printNumberOfTasks();
         }
         catch(InvalidEventCommand e) {
             e.printError();
         }
     }
 
-    public void addDefaultTask(String line) {
-        Task task = new Task(line);
-        addTask(task);
-        System.out.println("Added: " + line);
+    public void deleteTask(String[] words) {
+        try {
+            if(words.length != 2) {
+                throw new InvalidDeleteCommand();
+            }
+            else if(Integer.parseInt(words[1]) > getNumberOfTasks() || Integer.parseInt(words[1]) <= 0){
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            else {
+                int taskIndex = Integer.parseInt(words[1])-1;
+                System.out.println("Noted. I've removed this task:");
+                System.out.println("[" + tasks.get(taskIndex).getType() + "][" + tasks.get(taskIndex).getStatusIcon() + "] " + tasks.get(taskIndex).getDescription());
+                removeTask(taskIndex);
+                printNumberOfTasks();
+            }
+        }
+        catch (InvalidDeleteCommand e) {
+            e.printError();
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Please enter a valid task number.");
+        }
+        catch (NumberFormatException e){
+            System.out.println("Please enter a task number.");
+        }
+    }
+
+    public void printNumberOfTasks() {
         if(getNumberOfTasks() == 1) {
             System.out.println("You now have 1 task in the list.");
         }
         else {
             System.out.println("You now have " + getNumberOfTasks() + " tasks in the list.");
         }
+    }
+
+    public void processFile() {
+        try {
+            File file = new File("bob.txt");
+            if (file.createNewFile()) {
+                System.out.println("File created: " + file.getAbsolutePath());
+            } else {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNext()) {
+                    retrieveData(scanner.nextLine());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("error");
+        }
+    }
+
+
+    public void retrieveData(String line) {
+        String[] words = line.split("\\|");
+        Task task;
+        switch (words[0]) {
+            case "T" -> task = new Todo(words[2]);
+            case "D" -> task = new Deadline(words[2]);
+            case "E" -> task = new Event(words[2]);
+            default -> task = new Task(words[2]);
+        }
+        task.setIsDone(words[1].equals("X"));
+        tasks.add(task);
+        numberOfTasks++;
+    }
+
+
+    public void appendToFile(String filePath, Task task) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath,true);
+        String line = task.getType() + "|" + task.getStatusIcon() + "|" + task.getDescription() + "\n";
+        fileWriter.write(line);
+        fileWriter.close();
+    }
+
+    public void writeToFile(String filePath) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath);
+        for(Task task : tasks) {
+            fileWriter.write(task.getType() + "|" + task.getStatusIcon() + "|" + task.getDescription() + "\n");
+        }
+        fileWriter.close();
     }
 
 

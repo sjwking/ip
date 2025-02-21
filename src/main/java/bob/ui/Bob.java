@@ -1,15 +1,15 @@
 package bob.ui;
 
 import java.util.Scanner;
-
 import bob.tasks.TaskList;
 
 public class Bob {
     public static void main(String[] args) {
 
         boolean isExit = false;
-        TaskList list = new TaskList();
 
+        TaskList list = new TaskList();
+        list.processFile();
         printGreeting();
 
         while(!isExit) {

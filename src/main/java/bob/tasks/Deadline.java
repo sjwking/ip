@@ -5,4 +5,8 @@ public class Deadline extends Task{
         super(description);
         type = "D";
     }
+
+    public void setStatus(String icon) {
+        isDone = (icon.equals("1"));
+    }
 }
