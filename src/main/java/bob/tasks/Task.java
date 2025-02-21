@@ -3,7 +3,7 @@ package bob.tasks;
 public class Task {
     protected String description;
     protected boolean isDone;
-    protected String type = " ";
+    protected String type;
 
     public Task(String description) {
         this.description = description;
@@ -25,5 +25,4 @@ public class Task {
     public String getType() {
         return type;
     }
-    //...
 }
