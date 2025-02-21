@@ -10,6 +10,7 @@ public class Bob {
         boolean isExit = false;
         TaskList list = new TaskList();
 
+        list.processFile();
         printGreeting();
 
         while(!isExit) {
