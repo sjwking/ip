@@ -7,7 +7,4 @@ public class Todo extends Task {
         type = "T";
     }
 
-    public void setStatus(String icon) {
-        isDone = (icon.equals("1"));
-    }
 }

@@ -6,7 +6,4 @@ public class Deadline extends Task{
         type = "D";
     }
 
-    public void setStatus(String icon) {
-        isDone = (icon.equals("1"));
-    }
 }

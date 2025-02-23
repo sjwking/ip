@@ -1,49 +1,28 @@
 package bob.ui;
 
-import java.util.Scanner;
+import bob.parser.Command;
 import bob.tasks.TaskList;
+import bob.storage.Storage;
 
 public class Bob {
-    public static void main(String[] args) {
 
+    public void run() {
+        Ui ui = new Ui();
+        Storage storage = new Storage();
         boolean isExit = false;
 
-        TaskList list = new TaskList();
-        list.processFile();
-        printGreeting();
+        ui.printGreeting();
+        TaskList list = storage.retrieveList();
 
         while(!isExit) {
-            System.out.println("Enter input: ");
-            Scanner input = new Scanner(System.in);
-            String line = input.nextLine();
-
-            String[] words = line.split(" ");
-
-            printDivider();
-            isExit = list.processInput(words,line);
-            printDivider();
+            Command command = ui.readInput(list);
+            isExit = command.isExit();
+            ui.printDivider();
         }
     }
 
-    public static void printGreeting() {
-        String logo = " _____             _ \n"
-                + "|  _  \\           | |\n"
-                + "| |_|  |   ____   | |\n"
-                + "|     /   / __ \\  | |___\n"
-                + "|  _  \\  | |  | | |  __ \\\n"
-                + "| |_|  | | |__| | | |__| |\n"
-                + "|_____/   \\____/  |_____/\n";
-
-        System.out.println(logo);
-        printDivider();
-        System.out.println("Hello! I'm Bob!");
-        System.out.println("What can I do for you?");
-        printDivider();
+    public static void main(String[] args) {
+        new Bob().run();
     }
-
-    public static void printDivider() {
-        System.out.println("__________________________________________________________________________________________________________________");
-    }
-
 
 }

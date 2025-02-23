@@ -1,21 +1,26 @@
 package bob.tasks;
 
 import bob.exceptions.*;
-import java.io.File;
+import bob.storage.Storage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.util.Scanner;
+
 
 public class TaskList {
     protected ArrayList<Task> tasks = new ArrayList<>();
     protected int numberOfTasks = 0;
 
+    public TaskList(ArrayList<Task> tasks, int numberOfTasks) {
+        this.tasks = tasks;
+        this.numberOfTasks = numberOfTasks;
+    }
+
     public void addTask(Task task) {
         tasks.add(task);
         numberOfTasks++;
+        Storage storage = new Storage();
         try {
-            appendToFile("bob.txt",task);
+            storage.appendToFile("bob.txt",task);
         }
         catch(IOException e) {
             System.out.println("error");
@@ -25,8 +30,9 @@ public class TaskList {
     public void removeTask(int index) {
         tasks.remove(index);
         numberOfTasks--;
+        Storage storage = new Storage();
         try {
-            writeToFile("bob.txt");
+            storage.writeToFile("bob.txt",tasks);
         }
         catch(IOException e) {
             System.out.println("error");
@@ -37,49 +43,11 @@ public class TaskList {
         return numberOfTasks;
     }
 
-    public boolean processInput(String[] words, String line) {
-        switch(words[0]) {
-        case "bye":
-            return exitProgram();
-        case "list":
-            this.printList();
-            break;
-        case "mark":
-            this.markTask(words);
-            break;
-        case "unmark":
-            this.unmarkTask(words);
-            break;
-        case "todo":
-            this.addTodo(words);
-            break;
-        case "deadline":
-            this.addDeadline(words,line);
-            break;
-        case "event":
-            this.addEvent(words,line);
-            break;
-        case "delete":
-            this.deleteTask(words);
-            break;
-        default:
-            System.out.println("Please enter a valid command.");
-            break;
-        }
-        return false;
-    }
-
-    public boolean exitProgram() {
-        System.out.println("Bye. Hope to see you again soon!");
-        return true;
-    }
-
     public void printList() {
         System.out.println("Here are the tasks in your list:");
         for(int i = 0; i < tasks.size(); i++) {
             System.out.println(i+1 + ". [" + tasks.get(i).getType() + "][" + tasks.get(i).getStatusIcon() + "] " + tasks.get(i).getDescription());
         }
-
     }
 
     public void markTask(String[] words) {
@@ -95,7 +63,8 @@ public class TaskList {
                 int taskIndex = Integer.parseInt(words[1]) - 1;
                 System.out.println("[" + tasks.get(taskIndex).getType() + "][X] " + tasks.get(taskIndex).getDescription());
                 tasks.get(Integer.parseInt(words[1]) - 1).setIsDone(true);
-                writeToFile("bob.txt");
+                Storage storage = new Storage();
+                storage.writeToFile("bob.txt",tasks);
             }
         }
         catch(InvalidMarkCommand e) {
@@ -125,7 +94,8 @@ public class TaskList {
                 int taskIndex = Integer.parseInt(words[1])-1;
                 System.out.println("[" + tasks.get(taskIndex).getType() + "][ ] " + tasks.get(taskIndex).getDescription());
                 tasks.get(Integer.parseInt(words[1])-1).setIsDone(false);
-                writeToFile("bob.txt");
+                Storage storage = new Storage();
+                storage.writeToFile("bob.txt",tasks);
             }
         }
         catch(InvalidUnmarkCommand e) {
@@ -247,53 +217,5 @@ public class TaskList {
             System.out.println("You now have " + getNumberOfTasks() + " tasks in the list.");
         }
     }
-
-    public void processFile() {
-        try {
-            File file = new File("bob.txt");
-            if (file.createNewFile()) {
-                System.out.println("File created: " + file.getAbsolutePath());
-            } else {
-                Scanner scanner = new Scanner(file);
-                while (scanner.hasNext()) {
-                    retrieveData(scanner.nextLine());
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("error");
-        }
-    }
-
-
-    public void retrieveData(String line) {
-        String[] words = line.split("\\|");
-        Task task;
-        switch (words[0]) {
-            case "T" -> task = new Todo(words[2]);
-            case "D" -> task = new Deadline(words[2]);
-            case "E" -> task = new Event(words[2]);
-            default -> task = new Task(words[2]);
-        }
-        task.setIsDone(words[1].equals("X"));
-        tasks.add(task);
-        numberOfTasks++;
-    }
-
-
-    public void appendToFile(String filePath, Task task) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath,true);
-        String line = task.getType() + "|" + task.getStatusIcon() + "|" + task.getDescription() + "\n";
-        fileWriter.write(line);
-        fileWriter.close();
-    }
-
-    public void writeToFile(String filePath) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath);
-        for(Task task : tasks) {
-            fileWriter.write(task.getType() + "|" + task.getStatusIcon() + "|" + task.getDescription() + "\n");
-        }
-        fileWriter.close();
-    }
-
 
 }

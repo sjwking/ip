@@ -6,7 +6,4 @@ public class Event extends Task{
         type = "E";
     }
 
-    public void setStatus(String icon) {
-        isDone = (icon.equals("1"));
-    }
 }
