@@ -33,6 +33,9 @@ public class Parser {
         case "delete":
             list.deleteTask(command.words);
             break;
+        case "find":
+            list.findTask(command.words);
+            break;
         default:
             System.out.println("Please enter a valid command.");
             break;
