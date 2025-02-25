@@ -5,7 +5,9 @@ import bob.storage.Storage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * A list that stores all the tasks that the user creates, with methods that perform CRUD operations.
+ */
 public class TaskList {
     protected ArrayList<Task> tasks = new ArrayList<>();
     protected int numberOfTasks = 0;
@@ -15,6 +17,11 @@ public class TaskList {
         this.numberOfTasks = numberOfTasks;
     }
 
+    /**
+     * Adds task to the list and appends it to the data text file.
+     *
+     * @param task A task that the user creates
+     */
     public void addTask(Task task) {
         tasks.add(task);
         numberOfTasks++;
@@ -27,6 +34,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Removes a specified task in the list and in the data text file.
+     *
+     * @param index the index of the task in the TaskList
+     */
     public void removeTask(int index) {
         tasks.remove(index);
         numberOfTasks--;
@@ -43,6 +55,9 @@ public class TaskList {
         return numberOfTasks;
     }
 
+    /**
+     * Prints out all the tasks in the task list.
+     */
     public void printList() {
         System.out.println("Here are the tasks in your list:");
         for(int i = 0; i < tasks.size(); i++) {
@@ -50,6 +65,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks a specific task as done, based on the user's 'mark' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     */
     public void markTask(String[] words) {
         try {
             if(words.length != 2) {
@@ -81,6 +101,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks a specific task as not done, based on the user's 'unmark' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     */
     public void unmarkTask(String[] words) {
         try {
             if(words.length != 2) {
@@ -112,6 +137,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds a Todo task into the TaskList, based on the user's 'Todo' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     */
     public void addTodo(String[] words) {
         String description = "";
         int i = 1;
@@ -127,6 +157,12 @@ public class TaskList {
         printNumberOfTasks();
     }
 
+    /**
+     * Adds a Deadline task into the TaskList, based on the user's 'Deadline' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     * @param line a string that contains the user's command input.
+     */
     public void addDeadline(String[] words, String line) {
         try {
             if(!line.contains("/by") || words[1].equals("/by") || words[words.length-1].equals("/by")) {
@@ -151,6 +187,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds an Event task into the TaskList, based on the user's 'Event' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     * @param line a string that contains the user's command input.
+     */
     public void addEvent(String[] words, String line) {
         try {
             if (!line.contains("/from") || !line.contains("/to")) {
@@ -182,6 +224,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Deletes a specific task from the list, based on the user's 'delete' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     */
     public void deleteTask(String[] words) {
         try {
             if(words.length != 2) {
@@ -218,6 +265,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Finds and prints all tasks in the list that match the keyword in the user's 'find' command.
+     *
+     * @param words a string array that contains all the words in the user's command input.
+     */
     public void findTask(String[] words) {
         try {
             if (words.length != 2) {
