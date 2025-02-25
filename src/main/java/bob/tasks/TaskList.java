@@ -218,4 +218,25 @@ public class TaskList {
         }
     }
 
+    public void findTask(String[] words) {
+        try {
+            if (words.length != 2) {
+                throw new InvalidFindCommand();
+            }
+            else {
+                System.out.println("Here are the matching tasks in your list:");
+                int i = 1;
+                for(Task task : tasks) {
+                    if(task.getDescription().contains(words[1])) {
+                        System.out.println(i + ". [" + task.getType() + "][" + task.getStatusIcon() + "] " + task.getDescription());
+                        i++;
+                    }
+                }
+            }
+        }
+        catch (InvalidFindCommand e) {
+            e.printError();
+        }
+    }
+
 }
