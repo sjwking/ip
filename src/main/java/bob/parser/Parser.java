@@ -3,8 +3,17 @@ package bob.parser;
 import bob.tasks.TaskList;
 import bob.ui.Ui;
 
+/**
+ * This class is responsible for making sense of the user's command input.
+ */
 public class Parser {
 
+    /**
+     * Processes the user's command input by looking at the first word.
+     *
+     * @param command a Command object based on the user's command input.
+     * @param list the task list.
+     */
     public void processInput(Command command, TaskList list) {
         new Ui().printDivider();
 
@@ -42,6 +51,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Exits the program when the user inputs the 'bye' command.
+     *
+     * @param command a Command object based on the user's command input.
+     */
     public void exitProgram(Command command) {
         System.out.println("Bye. Hope to see you again soon!");
         command.isExit = true;
