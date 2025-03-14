@@ -39,7 +39,7 @@ The `list` feature allows you to view all your saved tasks. This is useful for k
   1. [D][X] finish UG (by: Friday, 2359)
   2. [E][X] CS2113 Lecture (from: 1600 to: 1800)
   3. [T][X] do ip
-
+  ```
 
 ### 2. Mark/Unmark
 The `mark` and `unmark` feature allows you to mark and unmark tasks. This is useful for keeping track of completed tasks.
@@ -51,14 +51,14 @@ The `mark` and `unmark` feature allows you to mark and unmark tasks. This is use
   User: mark 1
   Bob: Nice! I've marked this task as done:
   [D][X] finish UG (by: Friday, 2359)
-
+   ```
 - Format: `unmark <task number>`
 - Example:
   ```
   User: unmark 1
   Bob: OK! I've marked this task as not done yet:
   [D][X] finish UG (by: Friday, 2359)
-
+   ```
 ### 3. Todo
 The `todo` feature adds and saves a 'Todo' task into the list. This is useful for pending tasks that do not really have a deadline.
 
@@ -70,7 +70,7 @@ The `todo` feature adds and saves a 'Todo' task into the list. This is useful fo
   Bob: Got it. I've added this task:
   [T][ ] do ip
   You now have 8 tasks in the list.
-
+   ```
 ### 4. Deadline
 The `deadline` feature adds and saves a 'Deadline' task into the list. This is useful for pending tasks that have a deadline.
 
@@ -82,7 +82,7 @@ The `deadline` feature adds and saves a 'Deadline' task into the list. This is u
   Bob: Got it. I've added this task:
   [D][ ] finish UG (by: Friday, 2359)
   You now have 9 tasks in the list.
-
+   ```
 ### 5. Event
 The `event` feature adds and saves an 'Event' task into the list. This is useful for recording events with a specified duration.
 
@@ -94,7 +94,7 @@ The `event` feature adds and saves an 'Event' task into the list. This is useful
   Bob: Got it. I've added this task:
   [E][ ] CS2113 lecture (from: 1600 to: 1800)
   You now have 10 tasks in the list.
-
+   ```
 ### 6. Delete
 The `delete` feature deletes a task from the list.
 
@@ -106,7 +106,7 @@ The `delete` feature deletes a task from the list.
   Bob: Noted. I've removed this task:
   [E][ ] CS2113 lecture (from: 1600 to: 1800)
   You now have 9 tasks in the list.
-
+   ```
 ### 7. Find
 The `find` feature finds all tasks from the list based on a given keyword.
 
@@ -117,7 +117,7 @@ The `find` feature finds all tasks from the list based on a given keyword.
   User: find ip
   Bob: Here are the matching tasks in your list:
   1. [T][ ] do ip
-
+   ```
 
 ### 8. Exit Program
 The `bye` command allows the user to exit the program.
@@ -128,4 +128,4 @@ The `bye` command allows the user to exit the program.
   ```
   User: bye
   Bob: Bye. Hope to see you again soon!
-  
+   ``` 
