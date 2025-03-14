@@ -36,10 +36,9 @@ The `list` feature allows you to view all your saved tasks. This is useful for k
   ```
   User: list
   Bob: Here are the tasks in your list:
-  1. [D][X] finish UG (by: Friday, 2359)
-  2. [E][X] CS2113 Lecture (from: 1600 to: 1800)
-  3. [T][X] do ip
-
+  [D][X] finish UG (by: Friday, 2359)
+  [E][X] CS2113 Lecture (from: 1600 to: 1800)
+  [T][X] do ip
   ```
 
 ### 2. Mark/Unmark
@@ -127,8 +126,7 @@ The `find` feature finds all tasks from the list based on a given keyword.
   ```
   User: find ip
   Bob: Here are the matching tasks in your list:
-  1. [T][ ] do ip
-
+  [T][ ] do ip
   ```
   
 
