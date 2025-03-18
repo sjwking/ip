@@ -1,26 +1,144 @@
-# Duke project template
+# Bob User Guide
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+Welcome to Bob, your friendly and efficient chatbot! This guide will help you understand how to use Bob's features effectively.
 
-## Setting up in Intellij
+## Launching the program
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+Upon launching the program, the program will output a greeting to the user, as well as an ASCII art of Bob. From there, you can input any of the available commands in the terminal.
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
+```
+_____             _ 
+|  _  \           | |
+| |_|  |   ____   | |
+|     /   / __ \  | |___
+|  _  \  | |  | | |  __ \
+| |_|  | | |__| | | |__| |
+|_____/   \____/  |_____/
+
+__________________________________________________________________________________________________________________
+Hello! I'm Bob!
+What can I do for you?
+__________________________________________________________________________________________________________________
+Enter input: 
+```
+
+
+
+## Features
+
+### 1. List
+The `list` feature allows you to view all your saved tasks. This is useful for keeping track of ongoing activities or pending actions.
+
+#### How to Use:
+- Simply type `list` in the chat.
+- Bob will respond with all recorded tasks.
+- Example:
+  ```
+  User: list
+  Bob: Here are the tasks in your list:
+  [D][X] finish UG (by: Friday, 2359)
+  [E][X] CS2113 Lecture (from: 1600 to: 1800)
+  [T][X] do ip
+  ```
+
+### 2. Mark/Unmark
+The `mark` and `unmark` feature allows you to mark and unmark tasks. This is useful for keeping track of completed tasks.
+
+#### How to Use:
+- Format: `mark <task number>`
+- Example:
+  ```
+  User: mark 1
+  Bob: Nice! I've marked this task as done:
+  [D][X] finish UG (by: Friday, 2359)
    ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
+- Format: `unmark <task number>`
+- Example:
+  ```
+  User: unmark 1
+  Bob: OK! I've marked this task as not done yet:
+  [D][X] finish UG (by: Friday, 2359)
    ```
+  
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+### 3. Todo
+The `todo` feature adds and saves a 'Todo' task into the list. This is useful for pending tasks that do not really have a deadline.
+
+#### How to Use:
+- Format: `todo <task name>`
+- Example:
+  ```
+  User: todo do ip
+  Bob: Got it. I've added this task:
+  [T][ ] do ip
+  You now have 8 tasks in the list.
+   ```
+  
+
+### 4. Deadline
+The `deadline` feature adds and saves a 'Deadline' task into the list. This is useful for pending tasks that have a deadline.
+
+#### How to Use:
+- Format: `deadline <task name> /by <deadline>`
+- Example:
+  ```
+  User: deadline finish UG /by: Friday, 2359
+  Bob: Got it. I've added this task:
+  [D][ ] finish UG (by: Friday, 2359)
+  You now have 9 tasks in the list.
+   ```
+  
+
+### 5. Event
+The `event` feature adds and saves an 'Event' task into the list. This is useful for recording events with a specified duration.
+
+#### How to Use:
+- Format: `event <task name> /from <start time> /to <end time>`
+- Example:
+  ```
+  User: event CS2113 lecture /from 1600 /to 1800
+  Bob: Got it. I've added this task:
+  [E][ ] CS2113 lecture (from: 1600 to: 1800)
+  You now have 10 tasks in the list.
+   ```
+  
+
+### 6. Delete
+The `delete` feature deletes a task from the list.
+
+#### How to Use:
+- Format: `delete <task number>`
+- Example:
+  ```
+  User: delete 1
+  Bob: Noted. I've removed this task:
+  [E][ ] CS2113 lecture (from: 1600 to: 1800)
+  You now have 9 tasks in the list.
+   ```
+  
+
+### 7. Find
+The `find` feature finds all tasks from the list based on a given keyword.
+
+#### How to Use:
+- Format: `find <keyword>`
+- Example: 
+  ```
+  User: find ip
+  Bob: Here are the matching tasks in your list:
+  [T][ ] do ip
+  ```
+  
+
+
+### 8. Exit Program
+The `bye` command allows the user to exit the program.
+
+#### How to Use:
+- Simply type `bye` in the chat.
+- Example:
+  ```
+  User: bye
+  Bob: Bye. Hope to see you again soon!
+   ``` 
+  
